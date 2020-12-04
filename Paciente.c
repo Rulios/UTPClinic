@@ -10,7 +10,7 @@ struct Paciente{
 	char nombre[MAX_S];
 };
 
-int BuscarPaciente(Paciente pacientes[], int nPacientes, Paciente paciente);
+int BuscarPaciente(struct Paciente pacientes[], int nPacientes, struct Paciente paciente);
 
 
 
@@ -20,11 +20,11 @@ struct * Paciente ObtenerPacientes(int * nPacientes){
 	struct Paciente paciente;
 	int i = 0;
 	
-	archivo = fopen("pacientes.txt", "rb");
+	archivo = fopen("./src/pacientes.txt", "rb");
 	
 	if(archivo == NULL){
 		//crear un nuevo archivo llamado pacientes
-		archivo = fopen("pacientes.txt", "wb");
+		archivo = fopen("./src/pacientes.txt", "wb");
 		*nPacientes = 0;
 		pacientes = NULL;
 	}else{
@@ -49,23 +49,27 @@ struct * Paciente ObtenerPacientes(int * nPacientes){
 			paciente = pacientes[i];
 			i++;
 		}
-		fclose(archivo);
+		
 	}
+	
+	fclose(archivo);
 	return pacientes;
 }
 
-int AgregarPaciente(Paciente paciente){
+int AgregarPaciente(struct Paciente paciente){
 	FILE *archivo;
 	int nPacientes = 0;
 	struct * Paciente pacientes = ObtenerPacientes(&nPacientes);
 	int existePaciente = BuscarPaciente(pacientes, nPacientes, paciente);
 	
+	//modo de añadir al final
+	archivo = fopen("./src/pacientes.txt", "ab");
+	
 	if(archivo == NULL){
 		return 0;
 	}else{
 		if(existePaciente == -1){ //paciente nuevo
-			//modo de añadir al final
-			archivo = fopen("pacientes.txt", "ab");
+			
 			//mover puntero al final
 			fseek(archivo, 0, SEEK_END);
 			//añadir estructura de paciente al final de archivo
@@ -76,21 +80,22 @@ int AgregarPaciente(Paciente paciente){
 	}
 }
 
-int EliminarPaciente(Paciente paciente){
+int EliminarPaciente(struct Paciente paciente){
 	FILE *archivo;
 	int nPacientes = 0;
 	struct * Paciente pacientes = ObtenerPacientes(&nPacientes);
 	int existePaciente = BuscarPaciente(pacientes, nPacientes, paciente);
 	int i = 0;
 	
-	if(archivo == NULL){
-		return 0;
+	if(existePaciente == -1){ //paciente no existe para eliminar
+		return -1;
 	}else{
-		if(existePaciente == -1){ //paciente no existe para eliminar
-			return -1;
+		//sobreescribir el archivo y añadir la estructura menos el señalado
+		archivo = fopen("./src/pacientes.txt", "wb");
+		
+		if(archivo == NULL){
+			return 0;
 		}else{
-			//sobreescribir el archivo y añadir la estructura menos el señalado
-			archivo = fopen("pacientes.txt", "wb");
 			//mover puntero al final
 			fseek(archivo, 0, SEEK_SET);
 			for(i = 0; i < nPacientes; i++){
@@ -101,11 +106,12 @@ int EliminarPaciente(Paciente paciente){
 			}
 			fclose(archivo);
 		}
-		return 1;
+		
 	}
+	return 1;
 }
 
-int BuscarPaciente(Paciente pacientes[], int nPacientes, Paciente paciente){
+int BuscarPaciente(struct Paciente pacientes[], int nPacientes, struct Paciente paciente){
 	int i = 0;
 	for(i = 0; i < nPacientes ; i++){
 		//comparar por cédula

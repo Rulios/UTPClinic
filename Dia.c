@@ -154,18 +154,18 @@ void InicializarHorario(struct Dia dias[]){
 	RellenarTextoHorario(&dias[3], 8, 12); //viernes 8AM - 12PM
 }
 
-int main(){
-	int nDias = 0;
-	struct Dia * dias = ObtenerDias(&nDias);
-
-	
-	int i = 0, y = 0;
-	for(i = 0; i < 4; i++){
-		printf("%i: ", i +1);
-		for(y = 0; y < 7; y++){
-			printf("\t%s\n", dias[i].textoHorario[y]);
-		}
-	}
-	
-	return 0;
-}
+//int main(){
+//	int nDias = 0;
+//	struct Dia * dias = ObtenerDias(&nDias);
+//
+//	
+//	int i = 0, y = 0;
+//	for(i = 0; i < 4; i++){
+//		printf("%i: ", i +1);
+//		for(y = 0; y < 7; y++){
+//			printf("\t%s\n", dias[i].textoHorario[y]);
+//		}
+//	}
+//	
+//	return 0;
+//}

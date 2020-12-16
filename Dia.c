@@ -13,6 +13,8 @@ struct Dia{
 	char servicio[7][MAX_S]; //anotar el servicio de visita
 };
 
+void InicializarHorario(struct Dia dias[]);
+
 struct Dia * ObtenerDias(int * nDias){
 	FILE * archivo;
 	struct Dia * dias;

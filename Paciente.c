@@ -14,9 +14,9 @@ int BuscarPaciente(struct Paciente pacientes[], int nPacientes, struct Paciente 
 
 
 
-struct * Paciente ObtenerPacientes(int * nPacientes){
+struct Paciente * ObtenerPacientes(int * nPacientes){
 	FILE * archivo;
-	struct * Paciente pacientes;
+	struct Paciente * pacientes;
 	struct Paciente paciente;
 	int i = 0;
 	
@@ -35,7 +35,7 @@ struct * Paciente ObtenerPacientes(int * nPacientes){
 		*nPacientes = ftell(archivo) / sizeof(struct Paciente);
 		
 		//alojar memoria
-		pacientes = (struct * Paciente)malloc(*nPacientes * sizeof(struct Paciente));
+		pacientes = (struct Paciente *)malloc(*nPacientes * sizeof(struct Paciente));
 		
 		//posicionar el puntero al comienzo
 		fseek(archivo, 0, SEEK_SET);
@@ -59,7 +59,7 @@ struct * Paciente ObtenerPacientes(int * nPacientes){
 int AgregarPaciente(struct Paciente paciente){
 	FILE *archivo;
 	int nPacientes = 0;
-	struct * Paciente pacientes = ObtenerPacientes(&nPacientes);
+	struct Paciente * pacientes = ObtenerPacientes(&nPacientes);
 	int existePaciente = BuscarPaciente(pacientes, nPacientes, paciente);
 	
 	//modo de añadir al final
@@ -83,7 +83,7 @@ int AgregarPaciente(struct Paciente paciente){
 int EliminarPaciente(struct Paciente paciente){
 	FILE *archivo;
 	int nPacientes = 0;
-	struct * Paciente pacientes = ObtenerPacientes(&nPacientes);
+	struct Paciente * pacientes = ObtenerPacientes(&nPacientes);
 	int existePaciente = BuscarPaciente(pacientes, nPacientes, paciente);
 	int i = 0;
 	
@@ -120,9 +120,3 @@ int BuscarPaciente(struct Paciente pacientes[], int nPacientes, struct Paciente 
 	return -1;
 }
 
-
-
-int main(){
-	
-	return 0;
-}

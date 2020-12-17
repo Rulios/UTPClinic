@@ -5,12 +5,12 @@
 #define MAX_S 256
 
 struct Paciente{
-	char cedula[MAX_S];
+	char cedula[20];
 	char rol[MAX_S];
 	char nombre[MAX_S];
 };
 
-int BuscarPaciente(struct Paciente pacientes[], int nPacientes, struct Paciente paciente);
+int BuscarPaciente(struct Paciente pacientes[], int nPacientes, char cedula[20]);
 
 
 
@@ -44,9 +44,9 @@ struct Paciente * ObtenerPacientes(int * nPacientes){
 		//Me debe dar uno, puesto que es lo pedido
 		//Si me da 0, significa que la lectura está al final del archivo
 		while(1 == fread(&paciente, sizeof(struct Paciente), 1 , archivo)){
-			
+			//printf("\n%i %s | %s | %s\n", i + 1, paciente.nombre, paciente.cedula,paciente.rol);
 			//añadirlo al arreglo
-			paciente = pacientes[i];
+			pacientes[i] = paciente;
 			i++;
 		}
 		
@@ -60,7 +60,7 @@ int AgregarPaciente(struct Paciente paciente){
 	FILE *archivo;
 	int nPacientes = 0;
 	struct Paciente * pacientes = ObtenerPacientes(&nPacientes);
-	int existePaciente = BuscarPaciente(pacientes, nPacientes, paciente);
+	int existePaciente = BuscarPaciente(pacientes, nPacientes, paciente.cedula);
 	
 	//modo de añadir al final
 	archivo = fopen("./src/pacientes.txt", "ab");
@@ -69,9 +69,6 @@ int AgregarPaciente(struct Paciente paciente){
 		return 0;
 	}else{
 		if(existePaciente == -1){ //paciente nuevo
-			
-			//mover puntero al final
-			fseek(archivo, 0, SEEK_END);
 			//añadir estructura de paciente al final de archivo
 			fwrite(&paciente, sizeof(paciente), 1, archivo);
 			fclose(archivo);
@@ -80,11 +77,11 @@ int AgregarPaciente(struct Paciente paciente){
 	}
 }
 
-int EliminarPaciente(struct Paciente paciente){
+int EliminarPaciente(char cedula[20]){
 	FILE *archivo;
 	int nPacientes = 0;
 	struct Paciente * pacientes = ObtenerPacientes(&nPacientes);
-	int existePaciente = BuscarPaciente(pacientes, nPacientes, paciente);
+	int existePaciente = BuscarPaciente(pacientes, nPacientes, cedula);
 	int i = 0;
 	
 	if(existePaciente == -1){ //paciente no existe para eliminar
@@ -100,8 +97,8 @@ int EliminarPaciente(struct Paciente paciente){
 			fseek(archivo, 0, SEEK_SET);
 			for(i = 0; i < nPacientes; i++){
 				//añadir al archivo menos el paciente con la cédula a eliminar
-				if(pacientes[i].cedula != paciente.cedula){
-					fwrite(&pacientes[i], sizeof(paciente), 1, archivo);
+				if(strcmp(pacientes[i].cedula , cedula) != 0){
+					fwrite(&pacientes[i], sizeof(pacientes[i]), 1, archivo);
 				}
 			}
 			fclose(archivo);
@@ -111,12 +108,12 @@ int EliminarPaciente(struct Paciente paciente){
 	return 1;
 }
 
-int BuscarPaciente(struct Paciente pacientes[], int nPacientes, struct Paciente paciente){
+int BuscarPaciente(struct Paciente pacientes[], int nPacientes, char cedula[20]){
 	int i = 0;
 	for(i = 0; i < nPacientes ; i++){
 		//comparar por cédula
-		if(strcmp(pacientes[i].cedula, paciente.cedula) == 0) return i;
+		//printf("%s | %s\n", pacientes[i].cedula, cedula);
+		if(strcmp(pacientes[i].cedula, cedula) == 0) return i;
 	}
 	return -1;
 }
-

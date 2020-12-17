@@ -7,10 +7,11 @@
 struct Dia{
 	char nombre[MAX_S];
 	int reservado[7];
-	int VENTANAS_DISPONIBLES;
+	//int VENTANAS_DISPONIBLES;
 	char textoHorario[7][MAX_S]; //almacenar todos los horarios
 	int iTextoHorario; //variable para rastrear la cantidad de elementos en textoHorario
 	char servicio[7][MAX_S]; //anotar el servicio de visita
+	char cedPaciente[7][MAX_S]; //para guardar las cédulas del paciente que va a ocupar el horario
 };
 
 void InicializarHorario(struct Dia dias[]);

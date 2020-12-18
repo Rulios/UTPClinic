@@ -276,7 +276,7 @@ void MenuVerCitas(){
 		break;
 	}
 	
-	if(opcion != 3){
+	if(opcion != 4){
 		RegresarAPrincipal();
 	}
 	
